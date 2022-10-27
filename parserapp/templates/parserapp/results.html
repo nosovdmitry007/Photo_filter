@@ -1,0 +1,75 @@
+{% extends "base.html" %}
+
+{% block title %}
+Результат
+{% endblock %}
+{% block content %}
+        <!-- Masthead-->
+{% if vac %}
+        <header class="masthead bg-primary text-white text-center">
+            <div class="container d-flex align-items-center flex-column">
+
+                <!-- Masthead Heading-->
+                <h1 class="masthead-heading text-uppercase mb-0">Результаты запросов</h1>
+                <!-- Icon Divider-->
+<br>
+                <!-- Masthead Subheading-->
+
+            </div>
+        </header>
+<br>
+
+
+    <div class="col-lg-8 col-md-10 mx-auto">
+        {% for vacanc in vac %}
+
+        <div class="post-preview">
+            <a href="{% url 'parser:vacancy' id=vacanc.id %}">
+                <h2 class="post-title">
+                    {{ vacanc.name }}
+                </h2>
+                {{vacanc.comment}}
+                <h5 class="post-subtitle">
+                    Зарплата {{vacanc.salary}}
+                </h5>
+            </a>
+            <p>Дата публикации: {{ vacanc.date_publik }} в {{ vacanc.date_time }} по МСК</p>
+
+        </div>
+
+        <hr>
+        {% endfor %}
+
+<div class="pagination">
+    <span class="step-links">
+        {% if page_obj.has_previous %}
+            <a href="?page=1">&laquo; first</a>
+            <a href="?page={{ page_obj.previous_page_number }}">Предыдущая</a>
+        {% endif %}
+
+        <span class="current">
+            Страница {{ page_obj.number }} из {{ page_obj.paginator.num_pages }}.
+        </span>
+
+        {% if page_obj.has_next %}
+            <a href="?page={{ page_obj.next_page_number }}">Следующая</a>
+            <a href="?page={{ page_obj.paginator.num_pages }}">Последняя &raquo;</a>
+        {% endif %}
+    </span>
+</div>
+    </div>
+
+
+
+{% else %}
+<header class="masthead bg-primary text-white text-center">
+            <div class="container d-flex align-items-center flex-column">
+
+<h3 class="masthead-heading text-uppercase mb-0" align="center" >
+Пока нет результатов поиска вакансий
+    </h3>
+            </div>
+</header>
+{% endif %}
+
+{% endblock %}

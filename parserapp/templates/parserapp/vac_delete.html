@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+{% block title %}
+{{object.name}}
+{% endblock%}
+
+{% block content %}
+<br><br><br><br><br><br><br>
+
+<h3 >Вы уверены, что хотите удалить вакансию:</h3>
+<br>
+<div class="row">
+    <div class="col-lg-8 col-md-10 mx-auto">
+        {{object.name}}
+    </div>
+<br>
+
+    <form method="post">
+        {% csrf_token %}
+
+        <div class="clearfix">
+            <button type="submit" class="btn btn-danger" >Да</button>
+            </div>
+
+    </form>
+</div>
+{% endblock %}

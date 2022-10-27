@@ -1,0 +1,75 @@
+{% extends "base.html" %}
+
+{% block title %}
+Список скилов
+{% endblock %}
+
+{% block content %}
+{% if skils %}
+<header class="masthead bg-primary text-white text-center">
+            <div class="container d-flex align-items-center flex-column">
+
+                <!-- Masthead Heading-->
+                <h1 class="masthead-heading text-uppercase mb-0">скилы вакансий</h1>
+
+                <h5>Наиболее часто встречающиеся</h5>
+<br>
+                <h3>При нажатие нв скил будут показаны вакансии, где требуется выбраный навык</h3>
+                <!-- Icon Divider-->
+                            </div>
+        </header>
+<div class="row">
+    <div class="col-lg-8 col-md-10 mx-auto">
+        <table class ="table table-striped" align="center" >
+                    <thead>
+                        <tr>
+                            <th>Скилы</th>
+                            <th>Как часто встречаются</th>
+                        </tr>
+                    <thead>
+                    <tbody>
+
+                        {% for sk in skils %}
+                        <tr>
+                        <td>
+                            <a href="{% url 'parser:skil_vacanc' skil=sk.skil %}">
+                                {{ sk.skil }}
+                            </a>
+                        </td>
+                        <td>{{sk.total}}</td>
+                        {% endfor %}
+                        </tr>
+                </tbody>
+        </table>
+        <div class="pagination">
+    <span class="step-links">
+        {% if page_obj.has_previous %}
+            <a href="?page=1">&laquo; first</a>
+            <a href="?page={{ page_obj.previous_page_number }}">Предыдущая</a>
+        {% endif %}
+
+        <span class="current">
+            Страница {{ page_obj.number }} из {{ page_obj.paginator.num_pages }}.
+        </span>
+
+        {% if page_obj.has_next %}
+            <a href="?page={{ page_obj.next_page_number }}">Следующая</a>
+            <a href="?page={{ page_obj.paginator.num_pages }}">Последняя &raquo;</a>
+        {% endif %}
+    </span>
+</div>
+
+    </div>
+</div>
+{% else %}
+<header class="masthead bg-primary text-white text-center">
+            <div class="container d-flex align-items-center flex-column">
+
+<h3 class="masthead-heading text-uppercase mb-0" align="center" >
+Пока нет результатов поиска вакансий
+    </h3>
+            </div>
+</header>
+{% endif %}
+
+{% endblock %}

@@ -1,0 +1,28 @@
+
+{% extends "base.html" %}
+
+{% block title %}
+Профиль
+{% endblock %}
+
+{% block content %}
+<br>
+<br>
+<br>
+<br>
+<br>
+
+ Профиль пользователя {{object.username}}
+<br>
+Токен:
+<span id="token">{% if object.auth_token %} {{object.auth_token}} {% else %} не создан {% endif %}</span>
+
+<br>
+<br>
+<form action="{% url 'users:update_token' %}">
+      <button type="submit" class="btn btn-primary"> Обновить токен</button>
+</form>
+<br>
+<button type="submit" id = '#ajax-btn' class="btn btn-info"> Обновить токен ajax</button>
+
+{% endblock %}
