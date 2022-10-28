@@ -26,9 +26,6 @@ def face_filter(put):
         else:
             image = imutils.resize(image, width=1000)
 
-        # Получить размеры изображения
-        image_size = numpy.asarray(image.shape)[0:2]
-
         # Получение списка лиц с координатами и значением уверенности
         faces_boxes = detector.detect_faces(image)
         if not os.path.isdir(put + sleh+'face'):
