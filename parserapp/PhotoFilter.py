@@ -26,7 +26,7 @@ def filterphoto(put,format):
     #обрабатываем каждый файл и добавляем в массив для распознания
     if len(puti) >= 1:
         for j in puti:
-            if '.' not in i:
+            if '.' in j:
                 if format == 'raw':
                     with rawpy.imread(put + sleh + j) as raw:
                         thumb = raw.extract_thumb()

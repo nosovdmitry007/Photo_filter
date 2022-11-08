@@ -20,7 +20,7 @@ def face_filter(put):
 
     # Загрузка изображения с лицами
     for i in ph:
-        if '.' not in i:
+        if '.' in i:
             if format == 'raw':
 
                 with rawpy.imread(put + sleh + i) as raw:
