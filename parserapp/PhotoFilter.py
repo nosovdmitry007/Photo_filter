@@ -26,25 +26,25 @@ def filterphoto(put,format):
     #обрабатываем каждый файл и добавляем в массив для распознания
     if len(puti) >= 1:
         for j in puti:
-            if format == 'raw':
-                with rawpy.imread(put + sleh + j) as raw:
-                    thumb = raw.extract_thumb()
-                if thumb.format == rawpy.ThumbFormat.JPEG:
-                    with open('thumb.jpeg', 'wb') as f:
-                        f.write(thumb.data)
-                elif thumb.format == rawpy.ThumbFormat.BITMAP:
-                    imageio.imsave('thumb.jpeg', thumb.data)
+            if '.' not in i:
+                if format == 'raw':
+                    with rawpy.imread(put + sleh + j) as raw:
+                        thumb = raw.extract_thumb()
+                    if thumb.format == rawpy.ThumbFormat.JPEG:
+                        with open('thumb.jpeg', 'wb') as f:
+                            f.write(thumb.data)
+                    elif thumb.format == rawpy.ThumbFormat.BITMAP:
+                        imageio.imsave('thumb.jpeg', thumb.data)
+                    L = Image.open('thumb.jpeg')
+                else:
+                    L = Image.open(put + sleh +j)
 
-                L = Image.open('thumb.jpeg')
-            else:
-                L = Image.open(put + sleh +j)
 
-
-            z = L.resize((visota, shirina))
-            x = image.img_to_array(z)
-            x = x.reshape(visota, shirina, sloi)
-            x /= 255
-            xTest.append(x)  # добавляем в обучающую выборку
+                z = L.resize((visota, shirina))
+                x = image.img_to_array(z)
+                x = x.reshape(visota, shirina, sloi)
+                x /= 255
+                xTest.append(x)  # добавляем в обучающую выборку
         #преобразуем в нампай массив
         xTest = np.array(xTest)
         L.close()
