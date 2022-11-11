@@ -10,7 +10,7 @@ import platform
 def filterphoto(put,format):
 #Создаём классы по которым будем класифицировать фотографии
     sistem = platform.system()
-    if 'win' in sistem:
+    if 'Win' in sistem:
         sleh = '\\'
     else:
         sleh = '/'

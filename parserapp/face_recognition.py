@@ -15,7 +15,7 @@ detector = MTCNN()
 embedder = load_model('model/keras/facenet_keras.h5', compile=False)
 put = 'test/фото'
 sistem = platform.system()
-if 'win' in sistem:
+if 'Win' in sistem:
     sleh = '\\'
 else:
     sleh = '/'
