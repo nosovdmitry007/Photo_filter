@@ -4,7 +4,7 @@ from .forms import  PhotoFilterForm, PhotoFaceFilterForm
 from django.views.generic import TemplateView
 from .PhotoFilter import filterphoto
 from django.views.generic.edit import FormView
-from .face_detection import face_filter
+from .person_detect import person_filter
 
 #главная страница
 class AboutView(TemplateView):
@@ -33,7 +33,7 @@ class FilterFacePhoto(LoginRequiredMixin,FormView):
     def form_valid(self, form):
         put = form.cleaned_data['put']
         # format = form.cleaned_data['format']
-        face_filter(put)
+        person_filter(put)
 
         return super().form_valid(form)
 

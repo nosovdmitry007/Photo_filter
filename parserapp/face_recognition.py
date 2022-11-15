@@ -5,14 +5,17 @@ import statistics
 import os
 import cv2
 import numpy
-import keras
+# import keras
 import imutils
-from tensorflow.keras.models import load_model
+import tensorflow as tf
+
+from tensorflow import keras
+# from tensorflow.keras.models import load_model
 # Создание сети нахождения лиц
 detector = MTCNN()
 
 # Загрузка модели сети определения лиц
-embedder = load_model('model/keras/facenet_keras.h5', compile=False)
+embedder = keras.models.load_model('model/keras/facenet_keras.h5', compile=False)
 put = 'test/фото'
 sistem = platform.system()
 if 'Win' in sistem:
