@@ -37,14 +37,21 @@ def person_filter(put):
             # img = '/home/dima/PycharmProjects/Photo_filter/python-facedars-master/demo/detection_image/input/face/people.jpg'
             results = model_detect(image)
             df = results.pandas().xyxy[0]
-            df = df.drop(np.where(df['confidence'] < 0.7)[0])
+            df = df.drop(np.where(df['confidence'] < 0.3)[0])
 
             if not os.path.isdir(put + sleh + 'person'):
-                os.mkdir(put + sleh + 'face')
-            if not os.path.isdir(put + sleh + 'no_face'):
-                os.mkdir(put + sleh + 'no_face')
+                os.mkdir(put + sleh + 'person')
+            if not os.path.isdir(put + sleh + 'no_person'):
+                os.mkdir(put + sleh + 'no_person')
             # Работа с лицами
-            if 'person' in df['name']:
+            ob = pd.DataFrame()
+            ob['class'] = df['name']
+            oblasty = ob.values.tolist()
+            oblasty = sum(oblasty, [])
+            print(oblasty)
+            if 'person' in oblasty:
                 os.replace(put + sleh + i, put + sleh + 'person' + sleh + i)
             else:
                 os.replace(put + sleh + i, put + sleh + 'no_person' + sleh + i)
+
+person_filter("D:\RAW\\2022.10.29-11.04 отпуск Кисловодск\Джек")

@@ -11,7 +11,7 @@ def face_filter(put):
     # photo = 'people.jpg'
     # Создание сети нахождения лиц
     sistem = platform.system()
-    if 'Win' in sistem:
+    if 'win' in sistem:
         sleh = '\\'
     else:
         sleh = '/'
