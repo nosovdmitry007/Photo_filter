@@ -3,6 +3,7 @@ import platform
 
 import cv2
 import imageio
+import imutils
 import numpy as np
 import math
 
@@ -33,6 +34,11 @@ def person_filter(put):
                 image = cv2.imread('thumb.jpeg')
             else:
                 image = cv2.imread(put+sleh+i)
+
+            if image.shape[0] < image.shape[1]:
+                image = imutils.resize(image, height=640)
+            else:
+                image = imutils.resize(image, width=640)
 
             # img = '/home/dima/PycharmProjects/Photo_filter/python-facedars-master/demo/detection_image/input/face/people.jpg'
             results = model_detect(image)
