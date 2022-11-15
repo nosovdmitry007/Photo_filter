@@ -54,7 +54,7 @@ def person_filter(put):
             ob['class'] = df['name']
             oblasty = ob.values.tolist()
             oblasty = sum(oblasty, [])
-            print(oblasty)
+            # print(oblasty)
             if 'person' in oblasty:
                 os.replace(put + sleh + i, put + sleh + 'person' + sleh + i)
             else:
