@@ -32,8 +32,9 @@ class FilterFacePhoto(LoginRequiredMixin,FormView):
 
     def form_valid(self, form):
         put = form.cleaned_data['put']
-        # format = form.cleaned_data['format']
-        person_filter(put)
+        format = form.cleaned_data['format']
+        cat = form.cleaned_data['cat']
+        person_filter(put, format, cat)
 
         return super().form_valid(form)
 

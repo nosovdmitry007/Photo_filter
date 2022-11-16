@@ -12,13 +12,16 @@ import torch
 import pandas as pd
 
 
-def person_filter(put):
+def person_filter(put, format, cat):
     sistem = platform.system()
     if 'Win' in sistem:
         sleh = '\\'
     else:
         sleh = '/'
-    model_detect = torch.hub.load('yolov5_master', 'custom', path='model/yolov5x.pt', source='local')
+    put = os.path.normcase(put)
+    model_detect = torch.hub.load('yolov5_master', 'custom',
+                                  path='model/yolov5x.pt',
+                                  source='local')
     ph = os.listdir(put)
     for i in ph:
         if '.' in i:
@@ -45,19 +48,15 @@ def person_filter(put):
             df = results.pandas().xyxy[0]
             df = df.drop(np.where(df['confidence'] < 0.3)[0])
 
-            if not os.path.isdir(put + sleh + 'person'):
-                os.mkdir(put + sleh + 'person')
-            if not os.path.isdir(put + sleh + 'no_person'):
-                os.mkdir(put + sleh + 'no_person')
+            if not os.path.isdir(put + sleh + cat):
+                os.mkdir(put + sleh + cat)
             # Работа с лицами
             ob = pd.DataFrame()
             ob['class'] = df['name']
             oblasty = ob.values.tolist()
             oblasty = sum(oblasty, [])
             # print(oblasty)
-            if 'person' in oblasty:
-                os.replace(put + sleh + i, put + sleh + 'person' + sleh + i)
-            else:
-                os.replace(put + sleh + i, put + sleh + 'no_person' + sleh + i)
+            if cat in oblasty:
+                os.replace(put + sleh + i, put + sleh + cat + sleh + i)
 
-person_filter("D:\RAW\\2022.10.29-11.04 отпуск Кисловодск\Джек")
+# person_filter("D:\RAW\\2022.10.29-11.04 отпуск Кисловодск\Джек")
