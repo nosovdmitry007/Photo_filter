@@ -45,7 +45,7 @@ def person_filter(put, format, cat):
             # img = '/home/dima/PycharmProjects/Photo_filter/python-facedars-master/demo/detection_image/input/face/people.jpg'
             results = model_detect(image)
             df = results.pandas().xyxy[0]
-            df = df.drop(np.where(df['confidence'] < 0.3)[0])
+            df = df.drop(np.where(df['confidence'] < 0.7)[0])
 
             if not os.path.isdir(put + sleh + cat):
                 os.mkdir(put + sleh + cat)
