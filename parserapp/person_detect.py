@@ -5,8 +5,6 @@ import cv2
 import imageio
 import imutils
 import numpy as np
-import math
-
 import rawpy
 import torch
 import pandas as pd
@@ -19,12 +17,13 @@ def person_filter(put, format, cat):
     else:
         sleh = '/'
     put = os.path.normcase(put)
-    model_detect = torch.hub.load('yolov5_master', 'custom',
-                                  path='model/yolov5x.pt',
+    model_detect = torch.hub.load('parserapp/yolov5_master', 'custom',
+                                  path='parserapp/model/yolov5x.pt',
                                   source='local')
     ph = os.listdir(put)
+    format = '.'+format
     for i in ph:
-        if '.' in i:
+        if format in i:
             if format == 'raw':
 
                 with rawpy.imread(put + sleh + i) as raw:
