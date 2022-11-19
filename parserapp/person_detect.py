@@ -9,7 +9,6 @@ import rawpy
 import torch
 import pandas as pd
 
-
 def person_filter(put, format, cat):
     sistem = platform.system()
     if 'Win' in sistem:
@@ -36,26 +35,18 @@ def person_filter(put, format, cat):
                 image = cv2.imread('thumb.jpeg')
             else:
                 image = cv2.imread(put+sleh+i)
-
             if image.shape[0] < image.shape[1]:
                 image = imutils.resize(image, height=640)
             else:
                 image = imutils.resize(image, width=640)
-
-            # img = '/home/dima/PycharmProjects/Photo_filter/python-facedars-master/demo/detection_image/input/face/people.jpg'
             results = model_detect(image)
             df = results.pandas().xyxy[0]
             df = df.drop(np.where(df['confidence'] < 0.7)[0])
-
             if not os.path.isdir(put + sleh + cat):
                 os.mkdir(put + sleh + cat)
-            # Работа с лицами
             ob = pd.DataFrame()
             ob['class'] = df['name']
             oblasty = ob.values.tolist()
             oblasty = sum(oblasty, [])
-            # print(oblasty)
             if cat in oblasty:
                 os.replace(put + sleh + i, put + sleh + cat + sleh + i)
-
-# person_filter("D:\RAW\\2022.10.29-11.04 отпуск Кисловодск\Джек")
