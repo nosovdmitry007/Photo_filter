@@ -1,3 +1,5 @@
+import glob
+
 import rawpy
 import imageio
 import numpy as np
@@ -21,11 +23,11 @@ def filterphoto(put,format):
     sloi=3
     xTest = []
 
-    puti = [_ for _ in os.listdir(put) if _.endswith(f'.{format}')]
-
+    puti = glob.glob(f'{put}/*.{format}')
     #обрабатываем каждый файл и добавляем в массив для распознания
     if len(puti) >= 1:
         for j in puti:
+            j = j.split(sleh)[-1]
             if '.' in j:
                 if format == 'raw':
                     with rawpy.imread(put + sleh + j) as raw:

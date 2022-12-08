@@ -18,6 +18,10 @@ class PhotoFilterForm(forms.Form):
             ('arw', 'Sony: ARW'),
             ('srf', 'Sony: SRF'),
             ('sr2', 'Sony: SR2'))
+    wat = (('quality','Качество фотографий'),
+           ('eyes', 'Открытые глаза'))
+
+    wath = forms.ChoiceField(choices=wat, label='Выберите критерии фильтрации',widget=forms.Select(attrs={'class': 'form-control'}))
     put = forms.CharField(label='Путь к папке с фотографиями',widget=forms.TextInput(attrs={'placeholder': 'Путь', 'class': 'form-control'}))
     format = forms.ChoiceField(choices=form, label='Расширение файлов',widget=forms.Select(attrs={'class': 'form-control'}))
 
