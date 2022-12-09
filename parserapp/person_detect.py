@@ -21,7 +21,7 @@ def person_filter(put, format, cat):
 
     put = glob.glob(f'{put}/*.{format}')
     model_detect = torch.hub.load('parserapp/yolov5_master', 'custom',
-                                  path='parserapp/model/yolov5x.pt',
+                                  path='parserapp/model/yolov5m.pt',
                                   source='local')
     
     ph = os.listdir(put)

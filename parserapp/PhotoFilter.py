@@ -52,7 +52,7 @@ def filterphoto(put,format):
         L.close()
 
         # data_file= open(,'r')
-        model1 = load_model('./parserapp/best_model_87.3.h5', compile=False)
+        model1 = load_model('./parserapp/model/best_model_87.3.h5', compile=False)
     #создаем папки по категориям
         for k in className:
             if not os.path.isdir(put + sleh + k):
