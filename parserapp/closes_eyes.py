@@ -2,13 +2,14 @@ import glob
 import os
 
 import cv2
+import cv2_ext
 import imutils
 import numpy as np
 # import matplotlib.pyplot as plt
 import mediapipe as mp
 import imageio
 import platform
-
+import argparse
 import rawpy
 from mtcnn.mtcnn import MTCNN
 
@@ -26,17 +27,17 @@ def distance(point_1, point_2):
     return dist
 def get_ear(landmarks, refer_idxs, frame_width, frame_height):
     """
-    Calculate Eye Aspect Ratio for one eye.
+    Рассчитайте соотношение сторон глаз для одного глаза.
 
-    Args:
-        landmarks: (list) Detected landmarks list
-        refer_idxs: (list) Index positions of the chosen landmarks
-                            in order P1, P2, P3, P4, P5, P6
-        frame_width: (int) Width of captured frame
-        frame_height: (int) Height of captured frame
+    Аргументы:
+        ориентиры: (список) Список обнаруженных ориентиров
+        refer_idxs: (список) Расположение индексов выбранных ориентиров
+                            в порядке P1, P2, P3, P4, P5, P6
+    frame_width: (int) Ширина захваченного кадра
+        frame_height: (int) Высота захваченного кадра
 
-    Returns:
-        ear: (float) Eye aspect ratio
+    Возвращается:
+        EAR: (плавает) Соотношение сторон глаз
     """
     try:
         # Compute the euclidean distance between the horizontal
@@ -73,31 +74,38 @@ def calculate_avg_ear(landmarks, left_eye_idxs, right_eye_idxs, image_w, image_h
 
 def closes_eyes(put, format):
     sistem = platform.system()
+    # put = os.path.abspath(put)
+    # put = 'D:\\RAW\\2022.10.29-11.04 отпуск Кисловодск\\Джек\\person'
+    # print(put)
     if 'Win' in sistem:
         sleh = '\\'
-        ph = glob.glob(f'{put}/*.{format}')
+        # ph = glob.glob(f'{put}\\*.{format}')
     else:
         sleh = '/'
-        ph = glob.glob(f'/{put}/*.{format}')
+        # ph = glob.glob(f'/{put}/*.{format}')
     # Загрузка изображения с лицами
+    ph = os.listdir(put)
+    # print(ph)
+    format = '.' + format
     if len(ph) >= 1:
         for i in ph:
-            if '.' in i:
-                print(i)
+            # print(str(i))
+            if format in i:
+                # print(i)
                 if format == 'raw':
-
-                    with rawpy.imread(i) as raw:
+                    with rawpy.imread(put + sleh + i) as raw:
                         thumb = raw.extract_thumb()
                     if thumb.format == rawpy.ThumbFormat.JPEG:
                         with open('thumb.jpeg', 'wb') as f:
                             f.write(thumb.data)
                     elif thumb.format == rawpy.ThumbFormat.BITMAP:
                         imageio.imsave('thumb.jpeg', thumb.data)
-                    image = cv2.imread('thumb.jpeg')[:, :, ::-1]
+                    image = cv2.imread('thumb.jpeg')
                 else:
+                    image = cv2_ext.imread(put + sleh + i)
 
-                    image = cv2.imread(i)[:, :, ::-1]
-
+                # print('\n\n\n', image)
+                # print(i)
                 if image.shape[0] < image.shape[1]:
                     image = imutils.resize(image, height=1000)
                 else:
@@ -120,13 +128,13 @@ def closes_eyes(put, format):
 
                             # print(EAR)
 
-                if not os.path.isdir(put + sleh+'open_eyes'):
-                    os.mkdir(put + sleh+'open_eyes')
-                if not os.path.isdir(put + sleh+'closed_eyes'):
-                    os.mkdir(put + sleh+'closed_eyes')
-                # Работа с лицами
-                ph_name = i.split(sleh)[-1]
-                if EAR >= 0.15:
-                    os.replace(put+sleh+ph_name, put + sleh+'open_eyes'+sleh+ph_name)
-                else:
-                    os.replace(put+sleh+ph_name, put + sleh+'closed_eyes'+sleh+ph_name)
+                        if not os.path.isdir(put + sleh+'open_eyes'):
+                            os.mkdir(put + sleh+'open_eyes')
+                        if not os.path.isdir(put + sleh+'closed_eyes'):
+                            os.mkdir(put + sleh+'closed_eyes')
+                        # Работа с лицами
+                        # ph_name = i.split(sleh)[-1]
+                        if EAR >= 0.15:
+                            os.replace(put+sleh+i, put + sleh+'open_eyes'+sleh+i)
+                        else:
+                            os.replace(put+sleh+i, put + sleh+'closed_eyes'+sleh+i)

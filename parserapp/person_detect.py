@@ -3,6 +3,7 @@ import os
 import platform
 
 import cv2
+import cv2_ext
 import imageio
 import imutils
 import numpy as np
@@ -12,23 +13,25 @@ import pandas as pd
 
 
 def person_filter(put, format, cat):
+    # put = 'D:\\RAW\\2022.12.11\\Джек'
     sistem = platform.system()
     if 'Win' in sistem:
         sleh = '\\'
     else:
         sleh = '/'
-
-
-    put = glob.glob(f'{put}/*.{format}')
-    model_detect = torch.hub.load('parserapp/yolov5_master', 'custom',
-                                  path='parserapp/model/yolov5m.pt',
+    # put = os.path.abspath(put)
+    # print(put)
+    ph = glob.glob(f'{put}/*.{format}')
+    model_detect = torch.hub.load('./parserapp/yolov5_master', 'custom',
+                                  path='./parserapp/model/yolov5m.pt',
                                   source='local')
     
-    ph = os.listdir(put)
+    # ph = os.listdir(put)
+    # print(ph)
     # format = '.'+format
     for i in ph:
         i = i.split(sleh)[-1]
-
+        # print(i)
         if format == 'raw':
 
             with rawpy.imread(put + sleh + i) as raw:
@@ -40,14 +43,13 @@ def person_filter(put, format, cat):
                 imageio.imsave('thumb.jpeg', thumb.data)
             image = cv2.imread('thumb.jpeg')
         else:
-            image = cv2.imread(put+sleh+i)
+            image = cv2_ext.imread(put+sleh+i)
 
         if image.shape[0] < image.shape[1]:
             image = imutils.resize(image, height=640)
         else:
             image = imutils.resize(image, width=640)
 
-        # img = '/home/dima/PycharmProjects/Photo_filter/python-facedars-master/demo/detection_image/input/face/people.jpg'
         results = model_detect(image)
         df = results.pandas().xyxy[0]
         df = df.drop(np.where(df['confidence'] < 0.7)[0])
