@@ -1,5 +1,4 @@
 import glob
-
 import rawpy
 import imageio
 import numpy as np

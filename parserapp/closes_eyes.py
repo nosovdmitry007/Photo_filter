@@ -1,18 +1,13 @@
 import glob
 import os
-
 import cv2
 import cv2_ext
 import imutils
 import numpy as np
-# import matplotlib.pyplot as plt
 import mediapipe as mp
 import imageio
 import platform
-import argparse
 import rawpy
-from mtcnn.mtcnn import MTCNN
-
 
 mp_facemesh = mp.solutions.face_mesh
 mp_drawing  = mp.solutions.drawing_utils
@@ -69,72 +64,55 @@ def calculate_avg_ear(landmarks, left_eye_idxs, right_eye_idxs, image_w, image_h
     Avg_EAR = (left_ear + right_ear) / 2
     return Avg_EAR
 
-# image_eyes_open = cv2.imread("closes_eyes/test-open-eyes.jpg")[:, :, ::-1]
-# image_eyes_close = cv2.imread("closes_eyes/test-close-eyes.jpg")[:, :, ::-1]
-
 def closes_eyes(put, format):
     sistem = platform.system()
-    # put = os.path.abspath(put)
-    # put = 'D:\\RAW\\2022.10.29-11.04 отпуск Кисловодск\\Джек\\person'
-    # print(put)
     if 'Win' in sistem:
         sleh = '\\'
-        # ph = glob.glob(f'{put}\\*.{format}')
     else:
         sleh = '/'
-        # ph = glob.glob(f'/{put}/*.{format}')
     # Загрузка изображения с лицами
-    ph = os.listdir(put)
-    # print(ph)
-    format = '.' + format
+    ph = glob.glob(f'{put}/*.{format}')
+
     if len(ph) >= 1:
         for i in ph:
-            # print(str(i))
-            if format in i:
-                # print(i)
-                if format == 'raw':
-                    with rawpy.imread(put + sleh + i) as raw:
-                        thumb = raw.extract_thumb()
-                    if thumb.format == rawpy.ThumbFormat.JPEG:
-                        with open('thumb.jpeg', 'wb') as f:
-                            f.write(thumb.data)
-                    elif thumb.format == rawpy.ThumbFormat.BITMAP:
-                        imageio.imsave('thumb.jpeg', thumb.data)
-                    image = cv2.imread('thumb.jpeg')
-                else:
-                    image = cv2_ext.imread(put + sleh + i)
+            i = i.split(sleh)[-1]
+            if format == 'raw':
+                with rawpy.imread(put + sleh + i) as raw:
+                    thumb = raw.extract_thumb()
+                if thumb.format == rawpy.ThumbFormat.JPEG:
+                    with open('thumb.jpeg', 'wb') as f:
+                        f.write(thumb.data)
+                elif thumb.format == rawpy.ThumbFormat.BITMAP:
+                    imageio.imsave('thumb.jpeg', thumb.data)
+                image = cv2.imread('thumb.jpeg')
+            else:
+                image = cv2_ext.imread(put + sleh + i)
+            if image.shape[0] < image.shape[1]:
+                image = imutils.resize(image, height=1000)
+            else:
+                image = imutils.resize(image, width=1000)
 
-                # print('\n\n\n', image)
-                # print(i)
-                if image.shape[0] < image.shape[1]:
-                    image = imutils.resize(image, height=1000)
-                else:
-                    image = imutils.resize(image, width=1000)
+            image = np.ascontiguousarray(image)
+            imgH, imgW, _ = image.shape
 
-                image = np.ascontiguousarray(image)
-                imgH, imgW, _ = image.shape
+            # Running inference using static_image_mode
+            with mp_facemesh.FaceMesh(refine_landmarks=True) as face_mesh:
+                results = face_mesh.process(image)
 
-                # Running inference using static_image_mode
-                with mp_facemesh.FaceMesh(refine_landmarks=True) as face_mesh:
-                    results = face_mesh.process(image)
+                # If detections are available.
+                if results.multi_face_landmarks:
 
-                    # If detections are available.
-                    if results.multi_face_landmarks:
+                    # Iterate over detections of each face. Here, we have max_num_faces=1, so only one iteration is performed.
+                    for face_id, face_landmarks in enumerate(results.multi_face_landmarks):
+                        landmarks = face_landmarks.landmark
+                        EAR = calculate_avg_ear(landmarks, chosen_left_eye_idxs, chosen_right_eye_idxs, imgW, imgH)
 
-                        # Iterate over detections of each face. Here, we have max_num_faces=1, so only one iteration is performed.
-                        for face_id, face_landmarks in enumerate(results.multi_face_landmarks):
-                            landmarks = face_landmarks.landmark
-                            EAR = calculate_avg_ear(landmarks, chosen_left_eye_idxs, chosen_right_eye_idxs, imgW, imgH)
-
-                            # print(EAR)
-
-                        if not os.path.isdir(put + sleh+'open_eyes'):
-                            os.mkdir(put + sleh+'open_eyes')
-                        if not os.path.isdir(put + sleh+'closed_eyes'):
-                            os.mkdir(put + sleh+'closed_eyes')
-                        # Работа с лицами
-                        # ph_name = i.split(sleh)[-1]
-                        if EAR >= 0.15:
-                            os.replace(put+sleh+i, put + sleh+'open_eyes'+sleh+i)
-                        else:
-                            os.replace(put+sleh+i, put + sleh+'closed_eyes'+sleh+i)
+                    if not os.path.isdir(put + sleh+'open_eyes'):
+                        os.mkdir(put + sleh+'open_eyes')
+                    if not os.path.isdir(put + sleh+'closed_eyes'):
+                        os.mkdir(put + sleh+'closed_eyes')
+                    # Работа с лицами
+                    if EAR >= 0.1:
+                        os.replace(put+sleh+i, put + sleh+'open_eyes'+sleh+i)
+                    else:
+                        os.replace(put+sleh+i, put + sleh+'closed_eyes'+sleh+i)
