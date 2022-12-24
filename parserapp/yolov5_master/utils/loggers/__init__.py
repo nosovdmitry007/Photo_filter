@@ -1,6 +1,6 @@
 # YOLOv5 🚀 by Ultralytics, GPL-3.0 license
 """
-Logging utils
+Logging utils4
 """
 
 import os
@@ -311,7 +311,7 @@ class Loggers():
 class GenericLogger:
     """
     YOLOv5 General purpose logger for non-task specific logging
-    Usage: from utils.loggers import GenericLogger; logger = GenericLogger(...)
+    Usage: from utils4.loggers import GenericLogger; logger = GenericLogger(...)
     Arguments
         opt:             Run arguments
         console_logger:  Console logger

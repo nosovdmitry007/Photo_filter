@@ -18,7 +18,7 @@ def person_filter(put, format, cat):
         sleh = '/'
     ph = glob.glob(f'{put}/*.{format}')
     model_detect = torch.hub.load('./parserapp/yolov5_master', 'custom',
-                                  path='./parserapp/model/yolov5m.pt',
+                                  path='./parserapp/model/yolov5m6.pt',
                                   source='local')
     for i in ph:
         i = i.split(sleh)[-1]
@@ -36,13 +36,13 @@ def person_filter(put, format, cat):
             image = cv2_ext.imread(put+sleh+i)
 
         if image.shape[0] < image.shape[1]:
-            image = imutils.resize(image, height=640)
+            image = imutils.resize(image, height=1280)
         else:
-            image = imutils.resize(image, width=640)
+            image = imutils.resize(image, width=1280)
 
         results = model_detect(image)
         df = results.pandas().xyxy[0]
-        df = df.drop(np.where(df['confidence'] < 0.67)[0])
+        df = df.drop(np.where(df['confidence'] < 0.61)[0])
 
         if not os.path.isdir(put + sleh + cat):
             os.mkdir(put + sleh + cat)

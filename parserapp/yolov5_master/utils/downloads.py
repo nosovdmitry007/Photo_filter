@@ -1,6 +1,6 @@
 # YOLOv5 🚀 by Ultralytics, GPL-3.0 license
 """
-Download utils
+Download utils4
 """
 
 import logging
@@ -112,7 +112,7 @@ def attempt_download(file, repo='ultralytics/yolov5', release='v6.2'):
 
 
 def gdrive_download(id='16TiPfZj7htmTyhntwcZyEEAejOUxuT6m', file='tmp.zip'):
-    # Downloads a file from Google Drive. from yolov5.utils.downloads import *; gdrive_download()
+    # Downloads a file from Google Drive. from yolov5.utils4.downloads import *; gdrive_download()
     t = time.time()
     file = Path(file)
     cookie = Path('cookie')  # gdrive cookie
@@ -158,7 +158,7 @@ def get_token(cookie="./cookie"):
     return ""
 
 
-# Google utils: https://cloud.google.com/storage/docs/reference/libraries ----------------------------------------------
+# Google utils4: https://cloud.google.com/storage/docs/reference/libraries ----------------------------------------------
 #
 #
 # def upload_blob(bucket_name, source_file_name, destination_blob_name):
