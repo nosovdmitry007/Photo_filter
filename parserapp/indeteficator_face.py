@@ -27,7 +27,7 @@ class Fase:
         # print(image)
         rgb = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
         # преобразовать изображение в оттенки серого для haarcascade
-        gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+        # gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
         # faces = self.faceCascade.detectMultiScale(gray,
         #                                      scaleFactor=1.1,
         #                                      minNeighbors=5,
