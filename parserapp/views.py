@@ -1,12 +1,12 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse_lazy
-from .forms import  PhotoFilterForm, PhotoFaceFilterForm
+from .forms import PhotoFilterForm, PhotoFaceFilterForm, Face_indetefic
 from django.views.generic import TemplateView
 from .PhotoFilter import filterphoto
 from django.views.generic.edit import FormView
 from .person_detect import YOLO_filter
 from .closes_eyes import closes_eyes
-
+from .face_indetecation import face_inc
 yolo = YOLO_filter()
 #главная страница
 class AboutView(TemplateView):
@@ -45,6 +45,19 @@ class FilterFacePhoto(LoginRequiredMixin,FormView):
         format = form.cleaned_data['format']
         cat = form.cleaned_data['cat']
         yolo.person_filter(put, format, cat)
+
+        return super().form_valid(form)
+
+class IndicatFacePhoto(LoginRequiredMixin,FormView):
+    template_name = 'parserapp/indicatfacephoto.html'
+    form_class = Face_indetefic
+    success_url = reverse_lazy('parserapp:resultfilter')
+
+    def form_valid(self, form):
+        put_face = form.cleaned_data['put_face']
+        format = form.cleaned_data['format']
+        put_photo = form.cleaned_data['put_photo']
+        face_inc(put_face, put_photo)
 
         return super().form_valid(form)
 

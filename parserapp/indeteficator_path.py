@@ -3,9 +3,14 @@ import face_recognition
 import pickle
 import cv2
 import os
-
+import platform
 def face_enc(put):
     # в директории Images хранятся папки со всеми изображениями
+    sistem = platform.system()
+    if 'Win' in sistem:
+        sleh = '\\'
+    else:
+        sleh = '/'
     imagePaths = list(paths.list_images(put))
     knownEncodings = []
     knownNames = []
@@ -28,6 +33,6 @@ def face_enc(put):
     # сохраним эмбеддинги вместе с их именами в формате словаря
     data = {"encodings": knownEncodings, "names": knownNames}
     # для сохранения данных в файл используем метод pickle
-    f = open(f"{put}/face_enc", "wb")
+    f = open(f"{put}{sleh}face_enc", "wb")
     f.write(pickle.dumps(data))
     f.close()

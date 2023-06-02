@@ -123,7 +123,7 @@ class PhotoFaceFilterForm(forms.Form):
 (76, 'SCISSORS - НОЖНИЦЫ'),
 (77, 'TEDDYBEAR - ПЛЮШЕВЫЙ МИШКА'),
 (78, 'HAIRDRIER - ПАРИКМАХЕР'),
-(79, 'TOOTHBRUSH - ЗУБНАЯ ЩЁТКА'),
+(79, 'TOOTHBRUSH - ЗУБНАЯ ЩЁТКА')
 )
     put = forms.CharField(label='Путь к папке с фотографиями',
                           widget=forms.TextInput(attrs={'placeholder': 'Путь', 'class': 'form-control'}))
@@ -132,3 +132,31 @@ class PhotoFaceFilterForm(forms.Form):
     cat = forms.ChoiceField(choices=detect, label='Категория детекции',
                             widget=forms.Select(attrs={'class': 'form-control'}))
 
+
+class Face_indetefic(forms.Form):
+    form = (('jpg', 'JPG'),
+            ('jpeg', 'JPEG'),
+            ('cr', 'Kodak: CR'),
+            ('k25', 'Kodak: K25'),
+            ('kdc', 'Kodak: KDC'),
+            ('crw', 'Canon: CRW'),
+            ('cr2', 'Canon: CR2'),
+            ('cr3', 'Canon: CR3'),
+            ('erf', 'Epson: ERF'),
+            ('nef', 'Nikon: NEF'),
+            ('nrw', 'Nikon: NRW'),
+            ('orf', 'Olympus: ORF'),
+            ('pef', 'Pentax: PEF'),
+            ('rw2', 'Panasonic: RW2'),
+            ('arw', 'Sony: ARW'),
+            ('srf', 'Sony: SRF'),
+            ('sr2', 'Sony: SR2'))
+
+    format = forms.ChoiceField(choices=form, label='Расширение файлов',
+                               widget=forms.Select(attrs={'class': 'form-control'}))
+
+    put_face = forms.CharField(label='Путь к папке с лицами для распознания',
+                          widget=forms.TextInput(attrs={'placeholder': 'Путь', 'class': 'form-control'}))
+
+    put_photo = forms.CharField(label='Путь к папке с фотографиями',
+                               widget=forms.TextInput(attrs={'placeholder': 'Путь', 'class': 'form-control'}))

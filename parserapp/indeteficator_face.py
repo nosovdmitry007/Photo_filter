@@ -4,6 +4,7 @@ import pickle
 import time
 import cv2
 import os
+import platform
 
 class Fase:
     def __init__(self):
@@ -13,21 +14,25 @@ class Fase:
         # загрузите haarcascade в каскадный классификатор
         self.faceCascade = cv2.CascadeClassifier(cascPathface)
         # assert not faceCascade.empty()
-        # загрузите известные грани и вложения, сохраненные в последнем файле
-        self.data = pickle.loads(open('Face_people/face_enc', "rb").read())
         # Найдите путь к изображению, на котором вы хотите обнаружить лицо, и передайте его здесь
-    def face_indrtificator(self, image):
+    def face_indrtificator(self, image,path_face):
         # print(put)
-
+        sistem = platform.system()
+        if 'Win' in sistem:
+            sleh = '\\'
+        else:
+            sleh = '/'
+        # загрузите известные грани и вложения, сохраненные в последнем файле
+        data = pickle.loads(open(f'{path_face}{sleh}face_enc', "rb").read())
         # print(image)
         rgb = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
         # преобразовать изображение в оттенки серого для haarcascade
         gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
-        faces = self.faceCascade.detectMultiScale(gray,
-                                             scaleFactor=1.1,
-                                             minNeighbors=5,
-                                             minSize=(60, 60),
-                                             flags=cv2.CASCADE_SCALE_IMAGE)
+        # faces = self.faceCascade.detectMultiScale(gray,
+        #                                      scaleFactor=1.1,
+        #                                      minNeighbors=5,
+        #                                      minSize=(60, 60),
+        #                                      flags=cv2.CASCADE_SCALE_IMAGE)
 
         # встраивание лиц для face in input
         encodings = face_recognition.face_encodings(rgb)
@@ -39,7 +44,7 @@ class Fase:
             # Сравнить кодировки с кодировками в данных["кодировки"]
             # Совпадения содержат массив с логическими значениями и значением True для вложений, которым он точно соответствует
             # и False для остальных
-            matches = face_recognition.compare_faces(self.data["encodings"],
+            matches = face_recognition.compare_faces(data["encodings"],
                                                      encoding)
             # # установить name =inknown, если кодировка не совпадает
             # print(matches)
@@ -54,7 +59,7 @@ class Fase:
                 # каждое распознанное лицо - face
                 for i in matchedIdxs:
                     # Проверьте имена в соответствующих индексах, которые мы сохранили в matchedIdxs
-                    name = self.data["names"][i]
+                    name = data["names"][i]
                     # увеличьте количество для полученного нами имени
                     counts[name] = counts.get(name, 0) + 1
                     # установите имя, которое имеет наибольшее количество значений
