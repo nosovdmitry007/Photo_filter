@@ -4,8 +4,10 @@ from .forms import  PhotoFilterForm, PhotoFaceFilterForm
 from django.views.generic import TemplateView
 from .PhotoFilter import filterphoto
 from django.views.generic.edit import FormView
-from .person_detect import person_filter
+from .person_detect import YOLO_filter
 from .closes_eyes import closes_eyes
+
+yolo = YOLO_filter()
 #главная страница
 class AboutView(TemplateView):
     template_name = "parserapp/index.html"
@@ -42,7 +44,7 @@ class FilterFacePhoto(LoginRequiredMixin,FormView):
         put = form.cleaned_data['put']
         format = form.cleaned_data['format']
         cat = form.cleaned_data['cat']
-        person_filter(put, format, cat)
+        yolo.person_filter(put, format, cat)
 
         return super().form_valid(form)
 
