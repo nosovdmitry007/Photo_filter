@@ -18,8 +18,6 @@ class FilterPhoto(LoginRequiredMixin,FormView):
     form_class = PhotoFilterForm
     success_url = reverse_lazy('parserapp:resultfilter')
 
-
-
     def form_valid(self, form):
         put = form.cleaned_data['put']
         format = form.cleaned_data['format']
@@ -32,7 +30,6 @@ class FilterPhoto(LoginRequiredMixin,FormView):
             closes_eyes(put, format)
 
         return super().form_valid(form)
-
 
 
 class FilterFacePhoto(LoginRequiredMixin,FormView):
@@ -48,6 +45,7 @@ class FilterFacePhoto(LoginRequiredMixin,FormView):
 
         return super().form_valid(form)
 
+
 class IndicatFacePhoto(LoginRequiredMixin,FormView):
     template_name = 'parserapp/indicatfacephoto.html'
     form_class = Face_indetefic
@@ -55,11 +53,12 @@ class IndicatFacePhoto(LoginRequiredMixin,FormView):
 
     def form_valid(self, form):
         put_face = form.cleaned_data['put_face']
-        format = form.cleaned_data['format']
+        # format = form.cleaned_data['format']
         put_photo = form.cleaned_data['put_photo']
         face_inc(put_face, put_photo)
 
         return super().form_valid(form)
+
 
 class ResultFilterView(TemplateView):
     template_name = "parserapp/resultfilter.html"

@@ -1,9 +1,6 @@
 import face_recognition
-# import imutils
 import pickle
-import time
 import cv2
-import os
 import platform
 
 class Fase:

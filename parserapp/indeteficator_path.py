@@ -1,7 +1,7 @@
 from imutils import paths
 import face_recognition
 import pickle
-import cv2
+import cv2, cv2_ext
 import os
 import platform
 def face_enc(put):
@@ -20,7 +20,7 @@ def face_enc(put):
         name = imagePath.split(os.path.sep)[-2]
         # загружаем изображение и конвертируем его из BGR (OpenCV ordering)
         # в dlib ordering (RGB)
-        image = cv2.imread(imagePath)
+        image = cv2_ext.imread(imagePath)
         rgb = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
         # используем библиотеку Face_recognition для обнаружения лиц
         boxes = face_recognition.face_locations(rgb, model='hog')
