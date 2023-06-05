@@ -1,5 +1,5 @@
 import os
-import cv2_ext
+import cv2,cv2_ext
 import imutils
 from .indeteficator_path import face_enc
 from .indeteficator_face import Fase
@@ -27,3 +27,4 @@ def face_inc(path_face, path_photo):
                 if not os.path.isdir(f'{path_photo}/{s}'):
                     os.mkdir(f'{path_photo}{sleh}{s}')
                 os.replace(f'{path_photo}{sleh}{i}',f'{path_photo}{sleh}{s}{sleh}{i}')
+# face_inc('./Face_people','./face_test')

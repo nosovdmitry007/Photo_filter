@@ -1,7 +1,7 @@
 from imutils import paths
 import face_recognition
 import pickle
-import cv2, cv2_ext
+import cv2,cv2_ext
 import os
 import platform
 def face_enc(put):

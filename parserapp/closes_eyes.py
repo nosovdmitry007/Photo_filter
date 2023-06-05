@@ -84,7 +84,7 @@ def closes_eyes(put, format):
                         f.write(thumb.data)
                 elif thumb.format == rawpy.ThumbFormat.BITMAP:
                     imageio.imsave('thumb.jpeg', thumb.data)
-                image = cv2.imread('thumb.jpeg')
+                image = cv2_ext.imread('thumb.jpeg')
             else:
                 image = cv2_ext.imread(put + sleh + i)
             if image.shape[0] < image.shape[1]:
