@@ -42,9 +42,7 @@ class FilterFacePhoto(LoginRequiredMixin,FormView):
         put = form.cleaned_data['put']
         format = form.cleaned_data['format']
         cat = form.cleaned_data['cat']
-        print(put, format, cat)
         yolo.person_filter(put, format, cat)
-
         return super().form_valid(form)
 
 
