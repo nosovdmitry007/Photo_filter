@@ -3,7 +3,7 @@ import os
 import cv2_ext
 import numpy as np
 import mediapipe as mp
-from fun import read_raw, slesh, resize_img
+from .dop_fun import read_raw, slesh, resize_img
 
 mp_facemesh = mp.solutions.face_mesh
 mp_drawing  = mp.solutions.drawing_utils

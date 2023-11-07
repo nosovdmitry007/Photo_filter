@@ -1,25 +1,16 @@
 import os
-import cv2,cv2_ext
-import imutils
+import cv2_ext
 from .indeteficator_path import face_enc
 from .indeteficator_face import Fase
-import platform
+from .dop_fun import slesh, resize_img
 face = Fase()
 def face_inc(path_face, path_photo):
     face_enc(path_face)
     photo = os.listdir(path_photo)
-    sistem = platform.system()
-    if 'Win' in sistem:
-        sleh = '\\'
-    else:
-        sleh = '/'
+    sleh = slesh()
     if photo:
         for i in photo:
-            frame = cv2_ext.imread(f'{path_photo}{sleh}{i}')
-            if frame.shape[0] < frame.shape[1]:
-                frame = imutils.resize(frame, width=1280)
-            else:
-                frame = imutils.resize(frame, height=1280)
+            frame = resize_img(cv2_ext.imread(f'{path_photo}{sleh}{i}'), 1280)
             person = face.face_indrtificator(frame, path_face)
 
             if person:

@@ -6,7 +6,8 @@ import cv2_ext
 import numpy as np
 import torch
 from ultralytics import YOLO
-from fun import slesh,resize_img, read_raw
+from .dop_fun import slesh,resize_img, read_raw
+
 
 class YOLO_filter:
     def __init__(self):
