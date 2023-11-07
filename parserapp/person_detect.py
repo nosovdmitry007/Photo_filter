@@ -1,53 +1,31 @@
 import glob
 import multiprocessing
 import os
-import platform
 from multiprocessing import Process
 import cv2_ext
-import imageio
-import imutils
 import numpy as np
-import rawpy
 import torch
 from ultralytics import YOLO
-
+from fun import slesh,resize_img, read_raw
 
 class YOLO_filter:
     def __init__(self):
         self.device = torch.device("cuda:0") if torch.cuda.is_available() else torch.device("cpu")
         self.model_detect = YOLO("./model/yolov8l.pt")
 
-    def sleh(self):
-        sistem = platform.system()
-        if 'Win' in sistem:
-            sleh = '\\'
-        else:
-            sleh = '/'
-        return sleh
-
     def resiz(self, ph, proc, return_dict, format):
         phot = {}
         for i in ph:
             if format == 'raw':
-                with rawpy.imread(i) as raw:
-                    thumb = raw.extract_thumb()
-                if thumb.format == rawpy.ThumbFormat.JPEG:
-                    with open('thumb.jpeg', 'wb') as f:
-                        f.write(thumb.data)
-                elif thumb.format == rawpy.ThumbFormat.BITMAP:
-                    imageio.imsave('thumb.jpeg', thumb.data)
-                image = cv2_ext.imread('thumb.jpeg')
+                image = read_raw(i)
             else:
                 image = cv2_ext.imread(i)
-            if image.shape[0] < image.shape[1]:
-                image = imutils.resize(image, height=640)
-            else:
-                image = imutils.resize(image, width=640)
+            image = resize_img(image,640)
             phot[i] = image
         return_dict[proc] = phot
 
     def sort_img(self, put, cat_nam, spis):
-        sleh = self.sleh()
+        sleh = slesh()
         if not os.path.isdir(put + sleh+ cat_nam):
             os.mkdir(put + sleh + cat_nam)
         # Работа с лицами
