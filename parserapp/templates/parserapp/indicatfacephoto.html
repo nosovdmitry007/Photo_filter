@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+
+{% block title %}
+Форма запроса
+{% endblock %}
+{% block content %}
+        <!-- Contact Section-->
+    <header class="masthead bg-primary text-white text-center">
+            <div class="container d-flex align-items-center flex-column">
+
+                <h2 class="page-section-heading text-center text-uppercase text-secondary mb-0">Индикация лиц на фотографии</h2>
+
+                <div class="divider-custom">
+                    <div class="divider-custom-line"></div>
+                    <div class="divider-custom-icon"><i class="fas fa-star"></i></div>
+                    <div class="divider-custom-line"></div>
+                </div>
+
+                <div class="container d-flex align-items-center flex-column">
+                    <p class="masthead-subheading font-weight-light mb-0">
+                        На этой странице запускается нейроная сеть по индетефикации людей по фотографии.
+
+                        <br>
+                        Для этого необходимо поместить в папку с именем человека, его портреты, не менее 3 шт.
+                        <br>
+                        Указываем путь, где лежат фотографии для сортировки
+                        <br>
+                        Создается новая папка с наименованием категории
+
+                        <br>
+                    </p>
+                </div>
+            </div>
+    </header>
+                <div class="row justify-content-center">
+                    <div class="col-lg-8 col-xl-7">
+
+                        <form id="contactForm" data-sb-form-api-token="API_TOKEN" method="POST">
+
+                            {% csrf_token %}
+                            <!-- имя запроса-->
+
+                            {{ form.as_p }}
+                            <br>
+                          <button class="btn btn-primary" type="submit" >Начать фильтрацию</button>
+
+
+                        </form>
+
+                    </div>
+                </div>
+{% endblock %}

@@ -5,3 +5,7 @@ def kluch():
 def token_my():
     j='0d28a6c0e74b7cf4cdace964b92866353371d3b9'
     return j
+
+def my_kluch():
+    a = 'safa'
+    return a

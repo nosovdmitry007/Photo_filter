@@ -18,11 +18,11 @@ from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
 from rest_framework import routers, serializers, viewsets
-from parserapp.api_views import SkilsViewSet, VacancyViewSet
+# from parserapp.api_views import SkilsViewSet, VacancyViewSet
 
 router = routers.DefaultRouter()
-router.register(r'skills', SkilsViewSet)
-router.register(r'vacancy', VacancyViewSet)
+# router.register(r'skills', SkilsViewSet)
+# router.register(r'vacancy', VacancyViewSet)
 
 urlpatterns = [
     path('admin/', admin.site.urls),

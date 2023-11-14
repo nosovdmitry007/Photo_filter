@@ -1,13 +1,9 @@
 import glob
 import os
-import cv2
 import cv2_ext
-import imutils
 import numpy as np
 import mediapipe as mp
-import imageio
-import platform
-import rawpy
+from .dop_fun import read_raw, slesh, resize_img
 
 mp_facemesh = mp.solutions.face_mesh
 mp_drawing  = mp.solutions.drawing_utils
@@ -65,11 +61,7 @@ def calculate_avg_ear(landmarks, left_eye_idxs, right_eye_idxs, image_w, image_h
     return Avg_EAR
 
 def closes_eyes(put, format):
-    sistem = platform.system()
-    if 'Win' in sistem:
-        sleh = '\\'
-    else:
-        sleh = '/'
+    sleh = slesh()
     # Загрузка изображения с лицами
     ph = glob.glob(f'{put}/*.{format}')
 
@@ -77,21 +69,10 @@ def closes_eyes(put, format):
         for i in ph:
             i = i.split(sleh)[-1]
             if format == 'raw':
-                with rawpy.imread(put + sleh + i) as raw:
-                    thumb = raw.extract_thumb()
-                if thumb.format == rawpy.ThumbFormat.JPEG:
-                    with open('thumb.jpeg', 'wb') as f:
-                        f.write(thumb.data)
-                elif thumb.format == rawpy.ThumbFormat.BITMAP:
-                    imageio.imsave('thumb.jpeg', thumb.data)
-                image = cv2.imread('thumb.jpeg')
+                image = read_raw(put + sleh + i)
             else:
                 image = cv2_ext.imread(put + sleh + i)
-            if image.shape[0] < image.shape[1]:
-                image = imutils.resize(image, height=1000)
-            else:
-                image = imutils.resize(image, width=1000)
-
+            image = resize_img(image, 1000)
             image = np.ascontiguousarray(image)
             imgH, imgW, _ = image.shape
 
