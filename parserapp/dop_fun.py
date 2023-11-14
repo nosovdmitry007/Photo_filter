@@ -26,7 +26,7 @@ def slesh():
 
 
 def resize_img(image, size):
-    if image.shape[0] < image.shape[1]:
+    if image.shape[0] > image.shape[1]:
         image = imutils.resize(image, height=size)
     else:
         image = imutils.resize(image, width=size)
