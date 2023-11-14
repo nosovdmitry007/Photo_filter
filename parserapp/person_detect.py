@@ -43,11 +43,13 @@ class YOLO_filter:
         for n, f in zip(nam1, phot1):
             results = self.model_detect(f, imgsz=640, device=self.device, classes=int(cat), stream=True, conf=0.5)
             spis_img_cat = []
+
             for nm, result in zip(n, results):
                 if len(result.boxes.data.tolist()) > 0:
                     spis_img_cat.append(nm.split('/')[-1])
                     cat_nam = result.names[int(cat)]
-            self.sort_img(put, cat_nam, spis_img_cat)
+            if len(spis_img_cat) > 0:
+                self.sort_img(put, cat_nam, spis_img_cat)
 
     def person_filter(self, put, format, cat):
         ph = glob.glob(f'{put}/*.{format}')
